@@ -12,10 +12,23 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Gini",
+      "properties": {
+        "gini.geminiApiKey": {
+          "type": "string",
+          "description": "API key to enable Gini extension functionality.",
+          "markdownDescription": "To use Gini extension, you'll need a Gemini API key. Follow these steps:\n1. Visit [Google MakerSuite](https://makersuite.google.com/app/apikey).\n2. Log in or create an account if you haven't already.\n3. Navigate to the API key section.\n4. Generate a new API key.\n5. Copy the generated key and paste it below.",
+          "default": "",
+          "editPresentation": "singlelineText"
+        }
+      }
+    },
     "commands": [
       {
-        "command": "gini.helloWorld",
-        "title": "Hello World"
+        "command": "gini.run",
+        "title": "Run",
+        "category": "Gini"
       }
     ]
   },
