@@ -1,7 +1,12 @@
 {
   "name": "gini",
-  "displayName": "Gini",
-  "description": "",
+  "displayName": "Gini - AI Developer Companion",
+  "publisher": "SidharthMudgil",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SidharthMudgil/gini"
+  },
+  "description": "AI-based development companion to boost your productivity.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.85.0"
@@ -24,11 +29,46 @@
         }
       }
     },
+    
     "commands": [
       {
         "command": "gini.run",
         "title": "Run",
         "category": "Gini"
+      },
+      {
+        "command": "gini.update",
+        "title": "Update with Result",
+        "category": "Gini",
+        "icon": "$(replace)"
+      },
+      {
+        "command": "gini.copy",
+        "title": "Copy to Clipboard",
+        "category": "Gini",
+        "icon": "$(copy)"
+      }
+    ],
+
+    "menus": {
+      "editor/title": [
+        {
+          "command": "gini.copy",
+          "group": "navigation"
+        },
+        {
+          "command": "gini.update",
+          "group": "navigation"
+        }
+      ]
+    },
+
+    "keybindings": [
+      {
+        "command": "gini.run",
+        "key": "ctrl+shift+g",
+        "mac": "cmd++shift+g",
+        "when": "editorTextFocus"
       }
     ]
   },
