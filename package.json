@@ -33,7 +33,27 @@
     "commands": [
       {
         "command": "gini.run",
-        "title": "Run",
+        "title": "Run Assistant",
+        "category": "Gini"
+      },
+      {
+        "command": "gini.optimize",
+        "title": "Optimize Code",
+        "category": "Gini"
+      },
+      {
+        "command": "gini.transpile",
+        "title": "Transpile Code",
+        "category": "Gini"
+      },
+      {
+        "command": "gini.annotate",
+        "title": "Annotate Code",
+        "category": "Gini"
+      },
+      {
+        "command": "gini.deconstruct",
+        "title": "Explain Code",
         "category": "Gini"
       },
       {
@@ -50,6 +70,15 @@
       }
     ],
 
+    "keybindings": [
+      {
+        "command": "gini.run",
+        "key": "ctrl+shift+r",
+        "mac": "cmd++shift+r",
+        "when": "editorTextFocus"
+      }
+    ],
+
     "menus": {
       "editor/title": [
         {
@@ -61,16 +90,7 @@
           "group": "navigation"
         }
       ]
-    },
-
-    "keybindings": [
-      {
-        "command": "gini.run",
-        "key": "ctrl+shift+g",
-        "mac": "cmd++shift+g",
-        "when": "editorTextFocus"
-      }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
