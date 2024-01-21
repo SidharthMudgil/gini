@@ -63,12 +63,18 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export async function generateShowResult(command: Commands) {
-  gemini = gemini || new Gemini(await getGeminiApiKey());
+  const editor = vscode.window.activeTextEditor;
 
-  vscode.window.showInformationMessage("Gini: Generating results...");
-  const languageId = vscode.window.activeTextEditor?.document.languageId;
+  if (!editor) {
+    vscode.window.showErrorMessage("Gini: No active code editor found.");
+    return;
+  }
+
+  gemini = gemini || new Gemini(await getGeminiApiKey());
+  const languageId = editor.document.languageId;
 
   let result = "";
+  vscode.window.showInformationMessage("Gini: Generating results...");
   switch (command) {
     case Commands.Run:
       result = await gemini.runAssistant(getActiveDocumentText());
@@ -89,17 +95,32 @@ export async function generateShowResult(command: Commands) {
       throw new Error(`Unknown command: ${command}`);
   }
 
-  vscode.workspace
-    .openTextDocument({
-      content: result,
-      language: languageId || "plaintext",
-    })
-    .then((doc) => {
-      vscode.window.showTextDocument(doc, {
-        viewColumn: vscode.ViewColumn.Beside,
-        preserveFocus: true,
+  if (command !== Commands.Run) {
+    vscode.workspace
+      .openTextDocument({
+        content: result,
+        language: languageId || "plaintext",
+      })
+      .then((doc) => {
+        vscode.window.showTextDocument(doc, {
+          viewColumn: vscode.ViewColumn.Beside,
+          preserveFocus: true,
+        });
       });
-    });
+  } else {
+    showResultInWebView(result);
+  }
+}
+
+export function showResultInWebView(result: String) {
+  const panel = vscode.window.createWebviewPanel(
+    "resultWebview",
+    "Gini Assistant",
+    vscode.ViewColumn.Beside,
+    {}
+  );
+
+  panel.webview.html = `<html><body>${result}</body></html>`;
 }
 
 export function deactivate() {}
