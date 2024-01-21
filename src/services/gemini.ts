@@ -45,20 +45,20 @@ class Gemini {
   }
 
   async runAssistant(code: String): Promise<string> {
-    const prompt = PROMPT_GINI;
+    const prompt = `${PROMPT_GINI} code: ${code}`;
     const result = await this.model.generateContent(prompt);
-    
+
     const response = result.response;
     const text = response.text();
-    
-    const chatPrompt = PROMPT_CHAT;
+
+    const chatPrompt = `${PROMPT_CHAT} code: ${code}`;
     this.chatHistory.push({ role: "user", parts: chatPrompt });
 
     return text;
   }
 
   async optimizeCode(code: String): Promise<string> {
-    const prompt = PROMPT_OPTIMIZE;
+    const prompt = `${PROMPT_OPTIMIZE} code: ${code}`;
     const result = await this.model.generateContent(prompt);
 
     const response = result.response;
@@ -67,8 +67,8 @@ class Gemini {
     return text;
   }
 
-  async transpileCode(code: String): Promise<string> {
-    const prompt = PROMPT_TRANSPILE;
+  async transpileCode(code: String, to: String): Promise<string> {
+    const prompt = `${PROMPT_TRANSPILE} code: ${code} transpile to: ${to}`;
     const result = await this.model.generateContent(prompt);
 
     const response = result.response;
@@ -78,7 +78,7 @@ class Gemini {
   }
 
   async annotateCode(code: String): Promise<string> {
-    const prompt = PROMPT_ANNOTATE;
+    const prompt = `${PROMPT_ANNOTATE} code: ${code}`;
     const result = await this.model.generateContent(prompt);
 
     const response = result.response;
@@ -88,7 +88,7 @@ class Gemini {
   }
 
   async explainCode(code: String): Promise<string> {
-    const prompt = PROMPT_EXPLAIN;
+    const prompt = `${PROMPT_EXPLAIN} code: ${code}`;
     const result = await this.model.generateContent(prompt);
 
     const response = result.response;

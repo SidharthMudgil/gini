@@ -7,6 +7,7 @@ import {
   getActiveDocumentText,
   replaceWithClipboard,
 } from "./utils/helpers";
+import { LANGUAGES } from "./utils/constants";
 
 let gemini: Gemini | null = null;
 
@@ -83,7 +84,14 @@ export async function generateShowResult(command: Commands) {
       result = await gemini.optimizeCode(getActiveDocumentText());
       break;
     case Commands.Transpile:
-      result = await gemini.transpileCode(getActiveDocumentText());
+      const language = await vscode.window.showQuickPick(LANGUAGES);
+	
+	  if (!language) {
+		vscode.window.showErrorMessage("Gini: No target language selected.");
+		return;
+	  }
+
+      result = await gemini.transpileCode(getActiveDocumentText(), language);
       break;
     case Commands.Annotate:
       result = await gemini.annotateCode(getActiveDocumentText());
