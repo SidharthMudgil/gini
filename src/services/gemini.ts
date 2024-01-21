@@ -1,4 +1,3 @@
-import * as vscode from "vscode";
 import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import {
   MODEL_GEMINI_PRO,
@@ -9,7 +8,6 @@ import {
   PROMPT_OPTIMIZE,
   PROMPT_TRANSPILE,
 } from "../utils/constants";
-import { resolveSoa } from "dns";
 
 interface ChatHistoryItem {
   role: "user" | "model";

@@ -56,7 +56,7 @@
         "category": "Gini"
       },
       {
-        "command": "gini.update",
+        "command": "gini.replace",
         "title": "Update with Result",
         "category": "Gini",
         "icon": "$(replace)"
@@ -83,7 +83,7 @@
           "group": "navigation"
         },
         {
-          "command": "gini.update",
+          "command": "gini.replace",
           "group": "navigation"
         }
       ]

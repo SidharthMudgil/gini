@@ -1,11 +1,11 @@
-enum GiniCommands {
+enum Commands {
   Run = "gini.run",
   Optimize = "gini.optimize",
   Transpile = "gini.transpile",
   Annotate = "gini.annotate",
   Deconstruct = "gini.deconstruct",
-  Update = "gini.update",
+  Replace = "gini.replace",
   Copy = "gini.copy",
 }
 
-export default GiniCommands;
+export default Commands;

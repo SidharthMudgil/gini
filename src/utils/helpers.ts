@@ -2,12 +2,12 @@ import * as vscode from "vscode";
 
 export function getActiveDocumentText(
   codeSelection: boolean = false
-): string | undefined {
+): string {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
     vscode.window.showErrorMessage("Gini: No active text editor found.");
-    return undefined;
+    return '';
   }
 
   const selection = editor.selection;
