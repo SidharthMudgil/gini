@@ -85,11 +85,11 @@ export async function generateShowResult(command: Commands) {
       break;
     case Commands.Transpile:
       const language = await vscode.window.showQuickPick(LANGUAGES);
-	
-	  if (!language) {
-		vscode.window.showErrorMessage("Gini: No target language selected.");
-		return;
-	  }
+
+      if (!language) {
+        vscode.window.showErrorMessage("Gini: No target language selected.");
+        return;
+      }
 
       result = await gemini.transpileCode(getActiveDocumentText(), language);
       break;
@@ -103,7 +103,9 @@ export async function generateShowResult(command: Commands) {
       throw new Error(`Unknown command: ${command}`);
   }
 
-  if (command !== Commands.Run) {
+  if (command !== Commands.Run && command !== Commands.Deconstruct) {
+    result = result.replace(/^```[\w]+|```$/g, '').trim().replace(/^\n+|\n+$/g, '');
+
     vscode.workspace
       .openTextDocument({
         content: result,
@@ -116,17 +118,23 @@ export async function generateShowResult(command: Commands) {
         });
       });
   } else {
-    showResultInWebView(result);
+    showResultInWebView(result, command);
   }
 }
 
-export function showResultInWebView(result: String) {
+export function showResultInWebView(result: String, command: Commands) {
   const panel = vscode.window.createWebviewPanel(
     "resultWebview",
     "Gini Assistant",
     vscode.ViewColumn.Beside,
     {}
   );
+
+  if (command === Commands.Deconstruct) {
+    result = result.replace(/^```[\w]+|```$/g, '').trim().replace(/^\n+|\n+$/g, '');
+  } else {
+    
+  }
 
   panel.webview.html = `<html><body>${result}</body></html>`;
 }
