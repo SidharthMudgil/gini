@@ -129,12 +129,12 @@ export async function generateShowResult(command: Commands) {
           preserveFocus: true,
         });
       });
-  } else {
-    showResultInWebView(result, command);
+  } else if (command === Commands.Deconstruct) {
+    showResultInWebView(result);
   }
 }
 
-export function showResultInWebView(result: String, command: Commands) {
+export function showResultInWebView(result: String) {
   const panel = vscode.window.createWebviewPanel(
     "resultWebview",
     "Gini Assistant",
@@ -142,20 +142,11 @@ export function showResultInWebView(result: String, command: Commands) {
     {}
   );
 
-  let htmlContent = "";
-  if (command === Commands.Deconstruct) {
-    result = result
-      .replace(/^```[\w]+|```$/g, "")
-      .trim()
-      .replace(/^\n+|\n+$/g, "");
-    htmlContent = `<html><body>${result}</body></html>`;
-    panel.webview.html = htmlContent;
-    return;
-  }
-
-  if (!gemini) {
-    return;
-  }
+  result = result
+    .replace(/^```[\w]+|```$/g, "")
+    .trim()
+    .replace(/^\n+|\n+$/g, "");
+  panel.webview.html = `<html><body>${result}</body></html>`;
 }
 
 export function deactivate() {}

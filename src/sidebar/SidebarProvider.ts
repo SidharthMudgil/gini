@@ -33,9 +33,6 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "main.js")
     );
-    // const styleSideBar = webview.asWebviewUri(
-    //   vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "sidebar.css")
-    // );
 
     const nonce = getNonce();
 
@@ -57,24 +54,21 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
 			<body>
 			<section class="wrapper">
         <div class="chat-container">
-          <div class="message sender">
-            <div class="message-content">
-              <p>Hello there!</p>
-            </div>
-          </div>
-          <div class="message receiver">
-            <div class="message-content">
-              <p>Hi! How can I heasdjkahsdasdkashdjashuiw wyearewuyarcwr<br><br>lp you?</p>
-            </div>
-          </div>
+        In progress...
+          // <div class="message sender">
+          //   <div class="message-content">
+          //     <p>Hello there!</p>
+          //   </div>
+          // </div>
+          // <div class="message receiver">
+          //   <div class="message-content">
+          //     <p>Hi! How can I heasdjkahsdasdkashdjashuiwlp you?</p>
+          //   </div>
+          // </div>
         </div>
         <div class="input-container">
-          <div class="input-wrapper">
-            <input type="text" id="messageInput" placeholder="Ask a question...">
-          </div>
-          <div class="button-wrapper">
-              <button onclick="sendMessage()">Ask</button>
-          </div>
+          <input type="text" id="messageInput" placeholder="Ask a question...">
+          <button onclick="sendMessage()">Ask</button>
         </div>
 			</section>
 			<script nonce="${nonce}" src="${scriptUri}"></script>
