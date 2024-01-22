@@ -23,18 +23,19 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
   }
 
   private getHtmlContent(webview: vscode.Webview): string {
-    const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "main.js")
-    );
     const styleResetUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "reset.css")
-    );
-    const styleSideBar = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "sidebar.css")
     );
     const stylesheetUri = webview.asWebviewUri(
       vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "main.css")
     );
+
+    const scriptUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "main.js")
+    );
+    // const styleSideBar = webview.asWebviewUri(
+    //   vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "sidebar.css")
+    // );
 
     const nonce = getNonce();
 
@@ -49,25 +50,32 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
         <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;700&display=swap" rel="stylesheet">
 
 				<link href="${styleResetUri}" rel="stylesheet">
-				<link href="${styleSideBar}" rel="stylesheet">
-        <link href="${stylesheetUri}" rel="stylesheet">
+				<link href="${stylesheetUri}" rel="stylesheet">
 				
 			</head>
 
 			<body>
 			<section class="wrapper">
-      <div class="container">
-            <div class="content">
-                <h2 class="subtitle">Subscribe today</h2>
-                <input type="text" class="mail" placeholder="Your email address" name="mail" required>
-                
-                <button class="add-color-button">Subscribe</button>
-                
-                <p class="text">We won’t send you spam.</p>
-                <p class="text">Unsubscribe at any time.</p>
-                
+        <div class="chat-container">
+          <div class="message sender">
+            <div class="message-content">
+              <p>Hello there!</p>
             </div>
-      </div>
+          </div>
+          <div class="message receiver">
+            <div class="message-content">
+              <p>Hi! How can I heasdjkahsdasdkashdjashuiw wyearewuyarcwr<br><br>lp you?</p>
+            </div>
+          </div>
+        </div>
+        <div class="input-container">
+          <div class="input-wrapper">
+            <input type="text" id="messageInput" placeholder="Ask a question...">
+          </div>
+          <div class="button-wrapper">
+              <button onclick="sendMessage()">Ask</button>
+          </div>
+        </div>
 			</section>
 			<script nonce="${nonce}" src="${scriptUri}"></script>
       </body>
