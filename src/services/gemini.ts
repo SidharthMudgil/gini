@@ -2,7 +2,6 @@ import { GenerativeModel, GoogleGenerativeAI } from "@google/generative-ai";
 import {
   MODEL_GEMINI_PRO,
   PROMPT_ANNOTATE,
-  PROMPT_CHAT,
   PROMPT_EXPLAIN,
   PROMPT_GINI,
   PROMPT_OPTIMIZE,
@@ -17,7 +16,7 @@ interface ChatHistoryItem {
 class Gemini {
   private model: GenerativeModel;
   private genAI: GoogleGenerativeAI;
-  private chatHistory: ChatHistoryItem[];
+  chatHistory: ChatHistoryItem[];
 
   constructor(apiKey: string) {
     this.genAI = new GoogleGenerativeAI(apiKey);
@@ -45,14 +44,14 @@ class Gemini {
   }
 
   async runAssistant(code: String): Promise<string> {
+    this.chatHistory = [];
     const prompt = `${PROMPT_GINI} code: ${code}`;
+    this.chatHistory.push({ role: "user", parts: prompt });
+    
     const result = await this.model.generateContent(prompt);
-
     const response = result.response;
     const text = response.text();
-
-    const chatPrompt = `${PROMPT_CHAT} code: ${code}`;
-    this.chatHistory.push({ role: "user", parts: chatPrompt });
+    this.chatHistory.push({ role: "model", parts: text });
 
     return text;
   }

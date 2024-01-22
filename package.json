@@ -76,6 +76,25 @@
         "when": "editorTextFocus"
       }
     ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gini-assistant",
+          "title": "Gini Assistant",
+          "icon": "images/logo-gini.svg"
+        }
+      ]
+    },
+    "views": {
+      "gini-assistant": [
+        {
+          "type": "webview",
+          "id": "gini.run",
+          "name": "Gini Assistant",
+          "contextualTitle": "Gini Assistant"
+        }
+      ]
+    },
     "menus": {
       "editor/title": [
         {

@@ -8,6 +8,7 @@ import {
   replaceWithClipboard,
 } from "./utils/helpers";
 import { LANGUAGES } from "./utils/constants";
+import { GiniSidebarProvider } from "./sidebar/SidebarProvider";
 
 let gemini: Gemini | null = null;
 
@@ -52,7 +53,15 @@ export function activate(context: vscode.ExtensionContext) {
     replaceWithClipboard();
   });
 
+  const provider = new GiniSidebarProvider(context.extensionUri);
+
+  let webViewProvider = vscode.window.registerWebviewViewProvider(
+    GiniSidebarProvider.viewType,
+    provider
+  );
+
   context.subscriptions.push(
+    webViewProvider,
     run,
     optimize,
     transpile,
@@ -104,7 +113,10 @@ export async function generateShowResult(command: Commands) {
   }
 
   if (command !== Commands.Run && command !== Commands.Deconstruct) {
-    result = result.replace(/^```[\w]+|```$/g, '').trim().replace(/^\n+|\n+$/g, '');
+    result = result
+      .replace(/^```[\w]+|```$/g, "")
+      .trim()
+      .replace(/^\n+|\n+$/g, "");
 
     vscode.workspace
       .openTextDocument({
@@ -130,13 +142,20 @@ export function showResultInWebView(result: String, command: Commands) {
     {}
   );
 
+  let htmlContent = "";
   if (command === Commands.Deconstruct) {
-    result = result.replace(/^```[\w]+|```$/g, '').trim().replace(/^\n+|\n+$/g, '');
-  } else {
-    
+    result = result
+      .replace(/^```[\w]+|```$/g, "")
+      .trim()
+      .replace(/^\n+|\n+$/g, "");
+    htmlContent = `<html><body>${result}</body></html>`;
+    panel.webview.html = htmlContent;
+    return;
   }
 
-  panel.webview.html = `<html><body>${result}</body></html>`;
+  if (!gemini) {
+    return;
+  }
 }
 
 export function deactivate() {}
