@@ -54,7 +54,6 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
 			<body>
 			<section class="wrapper">
         <div class="chat-container">
-        in progress
           <!--<div class="message sender">
             <div class="message-content">
               <p>Hello there!</p>
@@ -64,14 +63,14 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
             <div class="message-content">
               <p>Hi! How can I heasdjkahsdasdkashdjashuiwlp you?</p>
             </div>
-          </div>
-        </div>_-->
+          </div>-->
+        </div>
         <div class="input-container">
           <input type="text" id="messageInput" placeholder="Ask a question...">
           <button onclick="sendMessage()">Ask</button>
         </div>
 			</section>
-			<script nonce="${nonce}" src="${scriptUri}"></script>
+			<script nonce="${nonce}" src="${scriptUri}" ></script>
       </body>
 
 			</html>`;
