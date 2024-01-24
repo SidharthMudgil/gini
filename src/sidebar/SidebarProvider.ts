@@ -48,7 +48,7 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
 
 				<link href="${styleResetUri}" rel="stylesheet">
 				<link href="${stylesheetUri}" rel="stylesheet">
-				
+
 			</head>
 
 			<body>
@@ -70,9 +70,8 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
           <button onclick="sendMessage()">Ask</button>
         </div>
 			</section>
-			<script nonce="${nonce}" src="${scriptUri}" ></script>
+        <script nonce="${nonce}" src="${scriptUri}" ></script>
       </body>
-
 			</html>`;
   }
 }

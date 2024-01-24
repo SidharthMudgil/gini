@@ -1,3 +1,5 @@
+const PROMPT_GINI = "You are Gini, A very helpful development assistant developed by Sidharth Mudgil[https://github.com/SidharthMudgil]. Your task is to provide answers to the questions raised by developer.";
+
 function createMessageReciver(message, chatContainer) {
   const messageReceiver = document.createElement("div");
   messageReceiver.classList.add("message", "receiver");
