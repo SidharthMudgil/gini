@@ -1,10 +1,11 @@
 import * as vscode from "vscode";
 import Commands from "../utils/commands";
+import { gemini } from "../extension";
 
 export class GiniSidebarProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = Commands.Run;
 
-  private _view?: vscode.WebviewView;
+  _view?: vscode.WebviewView;
 
   constructor(private readonly _extensionUri: vscode.Uri) {}
 
@@ -20,6 +21,29 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
       localResourceRoots: [this._extensionUri],
     };
     webviewView.webview.html = this.getHtmlContent(webviewView.webview);
+    webviewView.webview.onDidReceiveMessage(async (data) => {
+      switch (data.type) {
+        case "onAsk": {
+          vscode.window.showInformationMessage("Gini: Generating Answer");
+          const result = await gemini?.continueChat(data.value);
+          this._view?.webview.postMessage({
+            type: "gini-result",
+            value: "result",
+          });
+          break;
+        }
+
+        case "onInfo": {
+          vscode.window.showInformationMessage(data.value);
+          break;
+        }
+
+        case "onError": {
+          vscode.window.showErrorMessage(data.value);
+          break;
+        }
+      }
+    });
   }
 
   private getHtmlContent(webview: vscode.Webview): string {
@@ -48,6 +72,9 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
 
 				<link href="${styleResetUri}" rel="stylesheet">
 				<link href="${stylesheetUri}" rel="stylesheet">
+        <script nonce="${nonce}">
+          const tsvscode = acquireVsCodeApi();
+        </script>
 
 			</head>
 

@@ -1,4 +1,13 @@
-const PROMPT_GINI = "You are Gini, A very helpful development assistant developed by Sidharth Mudgil[https://github.com/SidharthMudgil]. Your task is to provide answers to the questions raised by developer.";
+window.addEventListener("message", (event) => {
+  const message = event.data;
+  switch (message.type) {
+    case 'gini-result': {
+      const chatContainer = document.querySelector(".chat-container");
+      createMessageSender(message.value, chatContainer);
+      break;
+    }
+  }
+});
 
 function createMessageReciver(message, chatContainer) {
   const messageReceiver = document.createElement("div");
@@ -13,6 +22,11 @@ function createMessageReciver(message, chatContainer) {
   messageContent.appendChild(paragraph);
   messageReceiver.appendChild(messageContent);
   chatContainer.appendChild(messageReceiver);
+
+  tsvscode.postMessage({
+    type: "onAsk",
+    value: messageContent
+  });
 }
 
 function createMessageSender(message, chatContainer) {
@@ -31,7 +45,6 @@ function createMessageSender(message, chatContainer) {
 }
 
 function sendMessage() {
-  window.alert("Gini: No target language selected.");
   const messageInput = document.getElementById("messageInput");
   const chatContainer = document.querySelector(".chat-container");
 
@@ -39,6 +52,7 @@ function sendMessage() {
   if (message !== "") {
     createMessageReciver(message, chatContainer);
   }
+  messageInput.value = '';
 }
 
 const askButton = document.querySelector("button");

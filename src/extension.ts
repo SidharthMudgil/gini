@@ -10,13 +10,9 @@ import {
 import { LANGUAGES } from "./utils/constants";
 import { GiniSidebarProvider } from "./sidebar/SidebarProvider";
 
-let gemini: Gemini | null = null;
+export let gemini: Gemini | null = null;
 
 export function activate(context: vscode.ExtensionContext) {
-  let run = vscode.commands.registerCommand(Commands.Run, async () => {
-    generateShowResult(Commands.Run);
-  });
-
   let optimize = vscode.commands.registerCommand(
     Commands.Optimize,
     async () => {
@@ -53,12 +49,16 @@ export function activate(context: vscode.ExtensionContext) {
     replaceWithClipboard();
   });
 
-  const provider = new GiniSidebarProvider(context.extensionUri);
+  const sidebarProvider = new GiniSidebarProvider(context.extensionUri);
 
   let webViewProvider = vscode.window.registerWebviewViewProvider(
     GiniSidebarProvider.viewType,
-    provider
+    sidebarProvider
   );
+
+  let run = vscode.commands.registerCommand(Commands.Run, async () => {
+    runGiniAssistant(sidebarProvider);
+  });
 
   context.subscriptions.push(
     webViewProvider,
@@ -70,6 +70,24 @@ export function activate(context: vscode.ExtensionContext) {
     copy,
     replace
   );
+}
+
+export async function runGiniAssistant(sidebarProvider: GiniSidebarProvider) {
+  const editor = vscode.window.activeTextEditor;
+
+  if (!editor) {
+    vscode.window.showErrorMessage("Gini: No active code editor found.");
+    return;
+  }
+
+  gemini = gemini || new Gemini(await getGeminiApiKey());
+  const languageId = editor.document.languageId;
+  
+  const result = await gemini.runAssistant(getActiveDocumentText());
+  sidebarProvider?._view?.webview.postMessage({
+    type: "gini-result",
+    value: result,
+  });
 }
 
 export async function generateShowResult(command: Commands) {
@@ -86,13 +104,11 @@ export async function generateShowResult(command: Commands) {
   let result = "";
   vscode.window.showInformationMessage("Gini: Generating results...");
   switch (command) {
-    case Commands.Run:
-      result = await gemini.runAssistant(getActiveDocumentText());
-      break;
-    case Commands.Optimize:
+    case Commands.Optimize: {
       result = await gemini.optimizeCode(getActiveDocumentText());
       break;
-    case Commands.Transpile:
+    }
+    case Commands.Transpile: {
       const language = await vscode.window.showQuickPick(LANGUAGES);
 
       if (!language) {
@@ -102,17 +118,20 @@ export async function generateShowResult(command: Commands) {
 
       result = await gemini.transpileCode(getActiveDocumentText(), language);
       break;
-    case Commands.Annotate:
+    }
+    case Commands.Annotate: {
       result = await gemini.annotateCode(getActiveDocumentText());
       break;
-    case Commands.Deconstruct:
+    }
+    case Commands.Deconstruct: {
       result = await gemini.explainCode(getActiveDocumentText());
       break;
+    }
     default:
       throw new Error(`Unknown command: ${command}`);
   }
 
-  if (command !== Commands.Run && command !== Commands.Deconstruct) {
+  if (command !== Commands.Deconstruct) {
     result = result
       .replace(/^```[\w]+|```$/g, "")
       .trim()
