@@ -103,7 +103,7 @@ export async function generateShowResult(command: Commands) {
   }
 
   gemini = gemini || new Gemini(await getGeminiApiKey());
-  const languageId = editor.document.languageId;
+  let languageId = editor.document.languageId;
 
   let result = "";
   vscode.window.showInformationMessage("Gini: Generating results...");
@@ -129,47 +129,29 @@ export async function generateShowResult(command: Commands) {
     }
     case Commands.Deconstruct: {
       result = await gemini.explainCode(getActiveDocumentText());
+      languageId = "plaintext";
       break;
     }
     default:
       throw new Error(`Unknown command: ${command}`);
   }
 
-  if (command !== Commands.Deconstruct) {
-    result = result
-      .replace(/^```[\w]+|```$/g, "")
-      .trim()
-      .replace(/^\n+|\n+$/g, "");
-
-    vscode.workspace
-      .openTextDocument({
-        content: result,
-        language: languageId || "plaintext",
-      })
-      .then((doc) => {
-        vscode.window.showTextDocument(doc, {
-          viewColumn: vscode.ViewColumn.Beside,
-          preserveFocus: true,
-        });
-      });
-  } else if (command === Commands.Deconstruct) {
-    showResultInWebView(result);
-  }
-}
-
-export function showResultInWebView(result: String) {
-  const panel = vscode.window.createWebviewPanel(
-    "resultWebview",
-    "Gini Assistant",
-    vscode.ViewColumn.Beside,
-    {}
-  );
-
   result = result
     .replace(/^```[\w]+|```$/g, "")
     .trim()
     .replace(/^\n+|\n+$/g, "");
-  panel.webview.html = `<html><body>${result}</body></html>`;
+
+  vscode.workspace
+    .openTextDocument({
+      content: result,
+      language: languageId || "plaintext",
+    })
+    .then((doc) => {
+      vscode.window.showTextDocument(doc, {
+        viewColumn: vscode.ViewColumn.Beside,
+        preserveFocus: true,
+      });
+    });
 }
 
 export function deactivate() {}
