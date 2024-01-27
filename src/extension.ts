@@ -10,7 +10,7 @@ import {
 import { LANGUAGES } from "./utils/constants";
 import { GiniSidebarProvider } from "./sidebar/SidebarProvider";
 
-export let gemini: Gemini | null = null;
+let gemini: Gemini | null = null;
 
 export function activate(context: vscode.ExtensionContext) {
   let optimize = vscode.commands.registerCommand(
@@ -88,6 +88,10 @@ export async function runGiniAssistant(sidebarProvider: GiniSidebarProvider) {
     type: "gini-result",
     value: `Hi, I'm Gini - AI development asssistant. Ask me any question related to ${filename} I'll try my best to answer.`,
   });
+}
+
+export async function getGemini(): Promise<Gemini> {
+  return gemini || new Gemini(await getGeminiApiKey());
 }
 
 export async function generateShowResult(command: Commands) {

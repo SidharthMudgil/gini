@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import Commands from "../utils/commands";
-import { gemini } from "../extension";
+import { getGemini } from "../extension";
 
 export class GiniSidebarProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = Commands.Run;
@@ -26,7 +26,7 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
       switch (data.type) {
         case "onAsk": {
           vscode.window.showInformationMessage("Gini: Generating Answer");
-          const result = await gemini?.continueChat(data.value);
+          const result = await (await getGemini()).continueChat(data.value);
           webviewView.webview.postMessage({
             type: "gini-result",
             value: result,
