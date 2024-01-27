@@ -43,17 +43,10 @@ class Gemini {
     return text;
   }
 
-  async runAssistant(code: String): Promise<string> {
+  async runAssistant(code: String): Promise<void> {
     this.chatHistory = [];
     const prompt = `${PROMPT_GINI} code: ${code}`;
     this.chatHistory.push({ role: "user", parts: prompt });
-    
-    const result = await this.model.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
-    this.chatHistory.push({ role: "model", parts: text });
-
-    return text;
   }
 
   async optimizeCode(code: String): Promise<string> {

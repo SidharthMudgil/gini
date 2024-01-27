@@ -25,7 +25,7 @@ function createMessageReciver(message, chatContainer) {
 
   tsvscode.postMessage({
     type: "onAsk",
-    value: messageContent
+    value: message
   });
 }
 

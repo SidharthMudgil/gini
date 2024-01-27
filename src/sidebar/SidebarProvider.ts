@@ -21,14 +21,15 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
       localResourceRoots: [this._extensionUri],
     };
     webviewView.webview.html = this.getHtmlContent(webviewView.webview);
+   
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
         case "onAsk": {
           vscode.window.showInformationMessage("Gini: Generating Answer");
           const result = await gemini?.continueChat(data.value);
-          this._view?.webview.postMessage({
+          webviewView.webview.postMessage({
             type: "gini-result",
-            value: "result",
+            value: result,
           });
           break;
         }
@@ -75,11 +76,9 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
         <script nonce="${nonce}">
           const tsvscode = acquireVsCodeApi();
         </script>
-
 			</head>
 
 			<body>
-			<section class="wrapper">
         <div class="chat-container">
           <!--<div class="message sender">
             <div class="message-content">
@@ -91,12 +90,11 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
               <p>Hi! How can I heasdjkahsdasdkashdjashuiwlp you?</p>
             </div>
           </div>-->
-        </div>
-        <div class="input-container">
-          <input type="text" id="messageInput" placeholder="Ask a question...">
-          <button onclick="sendMessage()">Ask</button>
-        </div>
-			</section>
+          </div>
+          <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Ask a question...">
+            <button onclick="sendMessage()">Ask</button>
+          </div>
         <script nonce="${nonce}" src="${scriptUri}" ></script>
       </body>
 			</html>`;

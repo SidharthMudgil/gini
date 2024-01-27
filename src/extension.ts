@@ -76,17 +76,17 @@ export async function runGiniAssistant(sidebarProvider: GiniSidebarProvider) {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
+    console.log("here");
     vscode.window.showErrorMessage("Gini: No active code editor found.");
     return;
   }
 
   gemini = gemini || new Gemini(await getGeminiApiKey());
-  const languageId = editor.document.languageId;
-  
   const result = await gemini.runAssistant(getActiveDocumentText());
+  const filename = editor.document.fileName;
   sidebarProvider?._view?.webview.postMessage({
     type: "gini-result",
-    value: result,
+    value: `Hi, I'm Gini - AI development asssistant. Ask me any question related to ${filename} I'll try my best to answer.`,
   });
 }
 
