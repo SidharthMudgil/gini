@@ -7,10 +7,11 @@ import {
   getActiveDocumentText,
   replaceWithClipboard,
 } from "./utils/helpers";
-import { LANGUAGES } from "./utils/constants";
+import { LANGUAGES, PROMPT_GINI } from "./utils/constants";
 import { GiniSidebarProvider } from "./sidebar/SidebarProvider";
 
 let gemini: Gemini | null = null;
+let sidebarProvider: GiniSidebarProvider;
 
 export function activate(context: vscode.ExtensionContext) {
   let optimize = vscode.commands.registerCommand(
@@ -49,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
     replaceWithClipboard();
   });
 
-  const sidebarProvider = new GiniSidebarProvider(context.extensionUri);
+  sidebarProvider = new GiniSidebarProvider(context.extensionUri);
 
   let webViewProvider = vscode.window.registerWebviewViewProvider(
     GiniSidebarProvider.viewType,
@@ -57,7 +58,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   let run = vscode.commands.registerCommand(Commands.Run, async () => {
-    runGiniAssistant(sidebarProvider);
+    continueChat("");
   });
 
   context.subscriptions.push(
@@ -72,7 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-export async function runGiniAssistant(sidebarProvider: GiniSidebarProvider) {
+export async function continueChat(message: string) {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
@@ -80,13 +81,20 @@ export async function runGiniAssistant(sidebarProvider: GiniSidebarProvider) {
     vscode.window.showErrorMessage("Gini: No active code editor found.");
     return;
   }
-
   gemini = gemini || new Gemini(await getGeminiApiKey());
-  const result = await gemini.runAssistant(getActiveDocumentText());
-  const filename = editor.document.fileName;
+
+  if (gemini.chatHistory.length === 0) {
+    if (message === '') {
+      message = `${PROMPT_GINI} code: ${getActiveDocumentText()}`;
+    } else {
+      message = `${PROMPT_GINI} code: ${getActiveDocumentText()} question: ${message}`;
+    }
+  }
+
+  const result = await gemini.continueChat(message);
   sidebarProvider?._view?.webview.postMessage({
     type: "gini-result",
-    value: `Hi, I'm Gini - AI development asssistant. Ask me any question related to ${filename} I'll try my best to answer.`,
+    value: result,
   });
 }
 
