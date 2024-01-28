@@ -6,8 +6,9 @@
     "type": "git",
     "url": "https://github.com/SidharthMudgil/gini"
   },
+  "icon": "images/logo.png",
   "description": "AI-based development companion to boost your productivity.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "vscode": "^1.85.0"
   },
