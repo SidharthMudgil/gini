@@ -57,13 +57,8 @@ export function activate(context: vscode.ExtensionContext) {
     sidebarProvider
   );
 
-  let run = vscode.commands.registerCommand(Commands.Run, async () => {
-    continueChat("");
-  });
-
   context.subscriptions.push(
     webViewProvider,
-    run,
     optimize,
     transpile,
     annotate,

@@ -31,11 +31,6 @@
     },
     "commands": [
       {
-        "command": "gini.run",
-        "title": "Run Assistant",
-        "category": "Gini"
-      },
-      {
         "command": "gini.optimize",
         "title": "Optimize Code",
         "category": "Gini"
@@ -66,14 +61,6 @@
         "title": "Copy to Clipboard",
         "category": "Gini",
         "icon": "$(copy)"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "gini.run",
-        "key": "ctrl+shift+r",
-        "mac": "cmd++shift+r",
-        "when": "editorTextFocus"
       }
     ],
     "viewsContainers": {
