@@ -45,14 +45,15 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
 
   private getHtmlContent(webview: vscode.Webview): string {
     const styleResetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "reset.css")
+      vscode.Uri.joinPath(this._extensionUri, "webview", "reset.css")
     );
+
     const stylesheetUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "main.css")
+      vscode.Uri.joinPath(this._extensionUri, "webview", "main.css")
     );
 
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this._extensionUri, "src", "sidebar", "main.js")
+      vscode.Uri.joinPath(this._extensionUri, "webview", "main.js")
     );
 
     const nonce = getNonce();
