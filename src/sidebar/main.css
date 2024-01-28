@@ -6,10 +6,15 @@ body {
     color: #d4d4d4;
 }
 
+.outer-container {
+    height: 100vh;
+}
+
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - 77px);
+    overflow: auto;
 }
 
 .message {
@@ -22,8 +27,8 @@ body {
 .sender {
     background-color: #007acc;
     color: #ffffff;
-    margin-top: 5px;
-    margin-left: 5px;
+    margin-top: 6px;
+    margin-left: 12px;
     align-self: flex-start;
 }
 
@@ -31,24 +36,23 @@ body {
     background-color: #2d2d2d;
     color: #d4d4d4;
     margin: 5p;
-    margin-right: 5px;
-    margin-bottom: 5px;
+    margin-right: 12px;
+    margin-bottom: 6px;
     align-self: flex-end;
 }
 
 .input-container {
-    position: fixed;
-    bottom: 0;
+    justify-content: center;
+    align-items: center;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
     background-color: #333333;
 }
 
 input {
+    width: calc(100% - 30px);
     padding: 10px;
     border: none;
     border-radius: 5px;

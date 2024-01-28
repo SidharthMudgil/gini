@@ -75,22 +75,17 @@ export class GiniSidebarProvider implements vscode.WebviewViewProvider {
 			</head>
 
 			<body>
-        <div class="chat-container">
-          <!--<div class="message sender">
-            <div class="message-content">
-              <p>Hello there!</p>
-            </div>
-          </div>
-          <div class="message receiver">
-            <div class="message-content">
-              <p>Hi! How can I heasdjkahsdasdkashdjashuiwlp you?</p>
-            </div>
-          </div>-->
+      <body>
+        <div class="outer-container">
+          <div class="chat-container">
           </div>
           <div class="input-container">
-            <input type="text" id="messageInput" placeholder="Ask a question...">
-            <button onclick="sendMessage()">Ask</button>
+              <div class="input" style="width: 100%;">
+                  <input type="text" id="messageInput" placeholder="Ask a question...">
+              </div>
+              <div class="send-button"> <button onclick="sendMessage()">Ask</button></div>
           </div>
+        </div>
         <script nonce="${nonce}" src="${scriptUri}" ></script>
       </body>
 			</html>`;
