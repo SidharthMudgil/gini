@@ -79,11 +79,7 @@ export async function continueChat(message: string) {
   gemini = gemini || new Gemini(await getGeminiApiKey());
 
   if (gemini.chatHistory.length === 0) {
-    if (message === '') {
-      message = `${PROMPT_GINI} code: ${getActiveDocumentText()}`;
-    } else {
-      message = `${PROMPT_GINI} code: ${getActiveDocumentText()} question: ${message}`;
-    }
+    message = `${PROMPT_GINI} code: ${getActiveDocumentText()} \n my first question is: ${message}`;
   }
 
   const result = await gemini.continueChat(message);

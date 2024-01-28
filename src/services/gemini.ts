@@ -31,11 +31,11 @@ class Gemini {
         maxOutputTokens: 200,
       },
     });
-    
+
     const result = await chat.sendMessage(message);
     const response = result.response;
     const text = response.text();
-   
+    
     this.chatHistory.push({ role: "user", parts: message });
     this.chatHistory.push({ role: "model", parts: text });
 
